@@ -1,32 +1,21 @@
-import { GetStaticProps } from 'next';
-
 import Navbar from '../components/Navbar';
 
-import { getUserData } from '../services/aerolabRedeem.service';
+import { useGetUserData } from '../services/aerolabRedeem.service';
 
-import { staticPropsRequest } from '../common/functions';
+export default function Home() {
+  const { data: userData, error, loading } = useGetUserData();
 
-import { UserData } from '../common/interfaces';
-
-export default function Home({
-  userData,
-  error,
-}: {
-  userData?: UserData;
-  error?: boolean | object;
-}) {
-  if (!userData && !error) {
+  if (loading) {
     // TODO: spinner
     return <div>Loading...</div>;
   }
   if (error) {
     // TODO: error component
-    return <div>Error: Failed to load data</div>;
+    return <div>Error: {error.message}</div>;
   }
-  return <Navbar userName={userData?.name} userPoints={userData?.points} />;
+  return (
+    <>
+      <Navbar userName={userData?.name} userPoints={userData?.points} />
+    </>
+  );
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  const result = await staticPropsRequest<UserData>('userData', getUserData);
-  return result;
-};
