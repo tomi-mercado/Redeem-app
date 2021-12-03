@@ -1,10 +1,11 @@
-import { UserData } from "../common/interfaces";
-import AerolabLogo from "./AerolabLogo";
-import Points from "./Points";
+import { UserData } from '../common/interfaces';
+
+import AerolabLogo from './AerolabLogo';
+import Points from './Points';
 
 export interface NavbarProps {
-  userName?: UserData["name"];
-  userPoints?: UserData["points"];
+  userName?: UserData['name'];
+  userPoints?: UserData['points'];
 }
 
 export default function Navbar({ userName, userPoints }: NavbarProps) {

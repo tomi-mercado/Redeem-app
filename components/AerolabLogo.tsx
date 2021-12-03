@@ -1,10 +1,9 @@
-import ImageComponentFactory from "../factories/ImageComponentFactory";
-
-import aerolabLogo from "../images/aerolab-logo.svg";
+import ImageComponentFactory from '../factories/ImageComponentFactory';
+import aerolabLogo from '../images/aerolab-logo.svg';
 
 const AerolabLogo = ImageComponentFactory({
   src: aerolabLogo,
-  alt: "Aerolab Logo",
+  alt: 'Aerolab Logo',
 });
 
 export default AerolabLogo;
