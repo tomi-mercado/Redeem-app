@@ -63,6 +63,7 @@ export const useAPI = <Payload extends unknown>(
 
   return {
     ...state,
+    // this allows to refresh the data waiting a promise to be resolved
     refresh: () => {
       return new Promise((resolve) => {
         setRefreshIndex(refreshIndex + 1);
