@@ -1,8 +1,12 @@
-import { GetStaticProps } from "next";
-import { staticPropsRequest } from "../common/functions";
-import { UserData } from "../common/interfaces";
-import Navbar from "../components/Navbar";
-import { getUserData } from "../services/aerolabRedeem.service";
+import { GetStaticProps } from 'next';
+
+import Navbar from '../components/Navbar';
+
+import { getUserData } from '../services/aerolabRedeem.service';
+
+import { staticPropsRequest } from '../common/functions';
+
+import { UserData } from '../common/interfaces';
 
 export default function Home({
   userData,
@@ -23,6 +27,6 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const result = await staticPropsRequest<UserData>("userData", getUserData);
+  const result = await staticPropsRequest<UserData>('userData', getUserData);
   return result;
 };
