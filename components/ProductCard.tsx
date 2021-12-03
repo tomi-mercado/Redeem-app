@@ -21,7 +21,7 @@ export default function ProductCard({
   category,
   missingPoints,
 }: ProductCardProps) {
-  const redeemable = missingPoints < 0;
+  const redeemable = missingPoints <= 0;
 
   const [mouseEnter, setMouseEnter] = useState(false);
 
