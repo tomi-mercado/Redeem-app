@@ -1,12 +1,8 @@
-import axios from 'axios';
+import { UserData } from '../common/interfaces';
 
-const { API_URL, AEROLAB_CHALLENGE_TOKEN } = process.env;
+import { useAPI } from './api.service';
 
-axios.defaults.baseURL = API_URL;
-axios.defaults.headers.common[
-  'Authorization'
-] = `Bearer ${AEROLAB_CHALLENGE_TOKEN}`;
-
-export const getUserData = () => {
-  return axios.get('/user/me');
-};
+export const useGetUserData = () =>
+  useAPI<UserData>({
+    url: '/user/me',
+  });
