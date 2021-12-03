@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 @layer components {
+  .typography {
+    @apply text-xl tracking-tight font-sans;
+  }
   .typography-gray {
-    @apply text-gray-600 text-xl tracking-tight font-sans;
+    @apply typography text-gray-600;
   }
   .typography-gray-light {
-    @apply text-gray-300;
+    @apply typography text-gray-300;
   }
   .typography-white {
-    @apply text-white;
+    @apply typography text-white;
   }
 }
