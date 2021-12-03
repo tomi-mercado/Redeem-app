@@ -1,6 +1,10 @@
+import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 
 import { useGetUserData } from '../services/aerolabRedeem.service';
+
+// TODO: this should come from cdn
+import headerImg from '../images/header.png';
 
 export default function Home() {
   const { data: userData, error, loading } = useGetUserData();
@@ -16,6 +20,7 @@ export default function Home() {
   return (
     <>
       <Navbar userName={userData?.name} userPoints={userData?.points} />
+      <Header title="Electronics" image={headerImg} />
     </>
   );
 }
