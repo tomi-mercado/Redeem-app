@@ -3,14 +3,11 @@ import RenderProductsCounter, {
   RenderProductsCounterProps,
 } from './RenderProductsCounter';
 import Sorter, { SorterProps } from './Sorter';
-import arrows from './arrows';
-
-const { ArrowLeft, ArrowRight } = arrows;
 
 export interface CatalogueOptionsProps {
-  renderProductsCounter: RenderProductsCounterProps;
-  sorter: SorterProps;
-  arrowControl: ArrowControlProps;
+  renderProductsCounter?: RenderProductsCounterProps;
+  sorter?: SorterProps;
+  arrowControl?: ArrowControlProps;
 }
 
 export default function CatalogueOptions({
@@ -21,14 +18,18 @@ export default function CatalogueOptions({
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex divide-x items-center">
-        <div className="mr-6">
-          <RenderProductsCounter {...renderProductsCounter} />
-        </div>
-        <div className="pl-6">
-          <Sorter {...sorter} />
-        </div>
+        {renderProductsCounter && (
+          <div className="mr-6">
+            <RenderProductsCounter {...renderProductsCounter} />
+          </div>
+        )}
+        {sorter && (
+          <div className="pl-6">
+            <Sorter {...sorter} />
+          </div>
+        )}
       </div>
-      <ArrowControl {...arrowControl} />
+      {arrowControl && <ArrowControl {...arrowControl} />}
     </div>
   );
 }
