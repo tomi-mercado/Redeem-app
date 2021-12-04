@@ -7,20 +7,24 @@ import Chip from './Chip';
 import Coin from './Coin';
 
 export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  id: string;
   title: string;
   category: string;
   pointsValue: number;
   missingPoints: number | undefined;
   image: string;
+  onRedeem?: (productId: string) => void;
 }
 
 export default function ProductCard({
+  id,
   image,
   title,
   pointsValue,
   category,
   missingPoints,
   className,
+  onRedeem,
 }: ProductCardProps) {
   const errorGettingPoints = missingPoints === undefined;
 
@@ -88,6 +92,8 @@ export default function ProductCard({
               className={`rounded-2xl mt-3 bg-white typography-gray text-lg w-56 p-2 ${
                 redeemable ? 'cursor-pointer' : 'cursor-auto'
               }`}
+              disabled={!redeemable}
+              onClick={() => redeemable && onRedeem?.(id)}
             >
               {errorGettingPoints
                 ? 'Failed to load your points'
