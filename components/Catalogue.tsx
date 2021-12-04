@@ -11,9 +11,14 @@ const pageSize = 16;
 export interface CatalogueProps {
   products: Product[];
   userPoints: number | undefined;
+  onProductRedeem?: (productId: string) => void | Promise<void>;
 }
 
-export default function Catalogue({ products, userPoints }: CatalogueProps) {
+export default function Catalogue({
+  products,
+  userPoints,
+  onProductRedeem,
+}: CatalogueProps) {
   const [page, setPage] = useState(0);
 
   const pages = Math.ceil(products.length / pageSize);
@@ -31,6 +36,10 @@ export default function Catalogue({ products, userPoints }: CatalogueProps) {
     } else {
       setPage(page + (page === 0 ? 0 : -1));
     }
+  };
+
+  const handleProductRedeem = async (productId: string) => {
+    await onProductRedeem?.(productId);
   };
 
   const productsToRender = (
@@ -81,12 +90,14 @@ export default function Catalogue({ products, userPoints }: CatalogueProps) {
         {productsToRender.map((product) => (
           <ProductCard
             key={product._id}
+            id={product._id}
             category={product.category}
             image={product.img.url}
             missingPoints={userPoints ? product.cost - userPoints : undefined}
             pointsValue={product.cost}
             title={product.name}
             className="w-full"
+            onRedeem={handleProductRedeem}
           />
         ))}
       </div>
