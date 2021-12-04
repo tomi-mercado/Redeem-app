@@ -1,6 +1,6 @@
 import Chip from './Chip';
 
-export type SortType = 'mostRecents' | 'lowestPrice' | 'highestPrice';
+export type SortType = 'lowestPrice' | 'highestPrice';
 
 export interface SorterProps {
   options: {
