@@ -2,7 +2,11 @@ import Catalogue from '../components/Catalogue';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 
-import { getProducts, useGetUserData } from '../services/aerolabRedeem.service';
+import {
+  getProducts,
+  redeemProduct,
+  useGetUserData,
+} from '../services/aerolabRedeem.service';
 
 import { staticPropsRequest } from '../common/functions';
 
@@ -23,7 +27,17 @@ const mock = {
 };
 
 export default function Home({ products }: { products: Product[] }) {
-  const { data: userData, error, loading } = useGetUserData();
+  const { data: userData, error, loading, refresh } = useGetUserData();
+
+  const handleProductRedeem = async (productId: string): Promise<void> => {
+    try {
+      await redeemProduct(productId);
+      return await refresh();
+    } catch (err) {
+      // TODO: handle error
+      console.error(err);
+    }
+  };
 
   if (loading) {
     // TODO: spinner
@@ -38,7 +52,11 @@ export default function Home({ products }: { products: Product[] }) {
       <Navbar userName={userData?.name} userPoints={userData?.points} />
       <Header title="Electronics" image={headerImg} />
       <div className="mt-16 px-32">
-        <Catalogue products={products} userPoints={userData?.points} />
+        <Catalogue
+          products={products}
+          userPoints={userData?.points}
+          onProductRedeem={handleProductRedeem}
+        />
       </div>
     </div>
   );
