@@ -15,12 +15,15 @@ export default function ArrowControl({
   onClickNext,
   onClickPrev,
 }: ArrowControlProps) {
+  const renderLeftArrow = page > 0;
+  const renderRightArrow = page < pages - 1;
+
   return (
     <div className="flex items-center justify-between w-28">
-      {page > 1 && (
+      {renderLeftArrow && (
         <ArrowLeft onClick={onClickPrev} className="cursor-pointer" />
       )}
-      {page < pages && (
+      {renderRightArrow && (
         <ArrowRight onClick={onClickNext} className="cursor-pointer" />
       )}
     </div>
