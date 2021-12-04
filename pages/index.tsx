@@ -1,9 +1,12 @@
-import CatalogueOptions from '../components/CatalogueOptions';
+import Catalogue from '../components/Catalogue';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
-import ProductCard from '../components/ProductCard';
 
-import { useGetUserData } from '../services/aerolabRedeem.service';
+import { getProducts, useGetUserData } from '../services/aerolabRedeem.service';
+
+import { staticPropsRequest } from '../common/functions';
+
+import { Product } from '../common/interfaces';
 
 // TODO: this should come from cdn
 import headerImg from '../images/header.png';
@@ -19,7 +22,7 @@ const mock = {
   category: 'Laptops',
 };
 
-export default function Home() {
+export default function Home({ products }: { products: Product[] }) {
   const { data: userData, error, loading } = useGetUserData();
 
   if (loading) {
@@ -31,42 +34,17 @@ export default function Home() {
     return <div>Error: {error.message}</div>;
   }
   return (
-    <>
+    <div className="pb-16">
       <Navbar userName={userData?.name} userPoints={userData?.points} />
       <Header title="Electronics" image={headerImg} />
-      <CatalogueOptions
-        arrowControl={{
-          page: 2,
-          pages: 3,
-        }}
-        renderProductsCounter={{
-          current: 16,
-          total: 32,
-        }}
-        sorter={{
-          options: [
-            {
-              label: 'Most recent',
-              value: 'mostRecents',
-            },
-            {
-              label: 'Lowest price',
-              value: 'lowestPrice',
-            },
-            {
-              label: 'Highest price',
-              value: 'highestPrice',
-            },
-          ],
-        }}
-      />
-      <ProductCard
-        title={mock.name}
-        category={mock.category}
-        image={mock.img.url}
-        pointsValue={mock.cost}
-        missingPoints={100}
-      />
-    </>
+      <div className="mt-16 px-32">
+        <Catalogue products={products} userPoints={userData?.points} />
+      </div>
+    </div>
   );
+}
+
+export async function getStaticProps() {
+  const r = await staticPropsRequest<Product[]>('products', getProducts);
+  return r;
 }
