@@ -6,22 +6,29 @@ import BuyIcon from './BuyIcon';
 import Chip from './Chip';
 import Coin from './Coin';
 
-export interface ProductCardProps {
+export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  id: string;
   title: string;
   category: string;
   pointsValue: number;
-  missingPoints: number;
+  missingPoints: number | undefined;
   image: string;
+  onRedeem?: (productId: string) => void;
 }
 
 export default function ProductCard({
+  id,
   image,
   title,
   pointsValue,
   category,
   missingPoints,
+  className,
+  onRedeem,
 }: ProductCardProps) {
-  const redeemable = missingPoints <= 0;
+  const errorGettingPoints = missingPoints === undefined;
+
+  const redeemable = !errorGettingPoints && missingPoints <= 0;
 
   const [mouseEnter, setMouseEnter] = useState(false);
 
@@ -32,18 +39,20 @@ export default function ProductCard({
 
   return (
     <div
-      className="relative cursor-pointer"
+      className={`relative cursor-pointer ${className || ''}`}
       style={{ width: 'fit-content', height: 'fit-content' }}
     >
       <div className="absolute top-3 right-3 z-10">
         {redeemable ? (
           <BuyIcon variant={mouseEnter ? 'white' : 'blue'} />
-        ) : !mouseEnter && (
-          <Chip disabledHover className="bg-gray-500 opacity-70">
-            <p className="typography-white text-sm flex items-center w-28 justify-around">
-              You need {missingPoints} <Coin height={20} width={20} />
-            </p>
-          </Chip>
+        ) : (
+          !mouseEnter && (
+            <Chip disabledHover className="bg-gray-500 opacity-70">
+              <p className="typography-white text-sm flex items-center w-28 justify-around">
+                You need {missingPoints} <Coin height={20} width={20} />
+              </p>
+            </Chip>
+          )
         )}
       </div>
       <div {...hoverHandlers} className="w-72 h-72 p-3 divide-y shadow-md">
@@ -83,8 +92,14 @@ export default function ProductCard({
               className={`rounded-2xl mt-3 bg-white typography-gray text-lg w-56 p-2 ${
                 redeemable ? 'cursor-pointer' : 'cursor-auto'
               }`}
+              disabled={!redeemable}
+              onClick={() => redeemable && onRedeem?.(id)}
             >
-              {redeemable ? 'Redeem now' : "You don't have enough points :("}
+              {errorGettingPoints
+                ? 'Failed to load your points'
+                : redeemable
+                ? 'Redeem now'
+                : "You don't have enough points :("}
             </button>
           </div>
         </div>
