@@ -23,16 +23,22 @@ export default function ArrowControl({
 
   return (
     <div
-    {...props}
+      {...props}
       className={`flex items-center justify-between w-28 ${
         className ? className : ''
       }`}
     >
       {renderLeftArrow && (
-        <ArrowLeft onClick={onClickPrev} className="cursor-pointer" />
+        <ArrowLeft
+          onClick={onClickPrev}
+          className="cursor-pointer text-gray-300 hover:text-blue-200"
+        />
       )}
       {renderRightArrow && (
-        <ArrowRight onClick={onClickNext} className="cursor-pointer" />
+        <ArrowRight
+          onClick={onClickNext}
+          className="cursor-pointer text-gray-300 hover:text-blue-200"
+        />
       )}
     </div>
   );
