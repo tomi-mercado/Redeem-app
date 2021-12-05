@@ -15,4 +15,8 @@
   .typography-white {
     @apply typography text-white;
   }
+
+  .noWrap {
+    @apply whitespace-nowrap overflow-ellipsis overflow-x-hidden;
+  }
 }

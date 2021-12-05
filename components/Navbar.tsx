@@ -14,7 +14,7 @@ export default function Navbar({ userName, userPoints }: NavbarProps) {
       <AerolabLogo />
       {userName && userPoints !== undefined && (
         <div className="flex items-center">
-          <p className="typography-gray mr-4 whitespace-nowrap overflow-ellipsis overflow-x-hidden">{userName}</p>
+          <p className="typography-gray mr-2 noWrap w-20 sm:w-24">{userName}</p>
           <Points amount={userPoints} />
         </div>
       )}
