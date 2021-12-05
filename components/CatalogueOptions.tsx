@@ -33,12 +33,12 @@ export default function CatalogueOptions({
     <div className="flex w-full items-center justify-between">
       <div className="w-full md:w-3/4 sm:flex divide-y sm:divide-y-0 sm:divide-x items-center">
         {renderProductsCounter && (
-          <div className="mr-2 lg:mr-6 pb-2 sm:pb-0">
+          <div className="mr-4 lg:mr-6 pb-4 sm:pb-0">
             <RenderProductsCounter {...renderProductsCounter} />
           </div>
         )}
         {sorter && (
-          <div className="pl-2 pt-2 sm:pt-0 lg:pl-6 w-full">
+          <div className="sm:pl-2 pt-4 sm:pt-0 lg:pl-6 w-full">
             <Sorter {...sorter} />
           </div>
         )}
