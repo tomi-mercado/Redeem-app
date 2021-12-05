@@ -51,7 +51,7 @@ export default function Home({ products }: { products: Product[] }) {
     <div className="pb-16">
       <Navbar userName={userData?.name} userPoints={userData?.points} />
       <Header title="Electronics" image={headerImg} />
-      <div className="mt-16 px-32">
+      <div className="mt-4 sm:mt-16 own-container">
         <Catalogue
           products={products}
           userPoints={userData?.points}

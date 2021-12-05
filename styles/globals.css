@@ -4,7 +4,7 @@
 
 @layer components {
   .typography {
-    @apply text-lg md:text-xl tracking-tight font-sans;
+    @apply text-base sm:text-lg md:text-xl tracking-tight font-sans;
   }
   .typography-gray {
     @apply typography text-gray-600;
@@ -22,5 +22,9 @@
 
   .noWrap {
     @apply whitespace-nowrap overflow-ellipsis overflow-x-hidden;
+  }
+
+  .own-container {
+    @apply w-full px-5 sm:px-10 xl:px-32;
   }
 }
