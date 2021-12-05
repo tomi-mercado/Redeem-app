@@ -10,11 +10,11 @@ export interface NavbarProps {
 
 export default function Navbar({ userName, userPoints }: NavbarProps) {
   return (
-    <nav className="flex justify-between py-5 px-10">
+    <nav className="flex justify-between py-3 px-5 sm:px-10">
       <AerolabLogo />
       {userName && userPoints !== undefined && (
         <div className="flex items-center">
-          <p className="typography-gray mr-4">{userName}</p>
+          <p className="typography-gray mr-2 noWrap w-18 sm:w-24">{userName}</p>
           <Points amount={userPoints} />
         </div>
       )}

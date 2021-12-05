@@ -83,10 +83,10 @@ export default function Catalogue({
         }}
       />
       <div className="divide-y">
-        <div className="h-6"></div>
-        <div className="h-7"></div>
+        <div className="h-4 sm:h-6"></div>
+        <div className="h-5 sm:h-7"></div>
       </div>
-      <div className="grid grid-cols-4 justify-items-center gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center gap-6">
         {productsToRender.map((product) => (
           <ProductCard
             key={product._id}
@@ -105,6 +105,7 @@ export default function Catalogue({
         <CatalogueOptions
           renderProductsCounter={renderProductsCounterProps}
           arrowControl={arrowControlProps}
+          variant="bottom"
         />
       </div>
     </div>

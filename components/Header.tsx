@@ -14,7 +14,7 @@ export default function Header({ title, image }: HeaderProps) {
   return (
     <div className="w-full relative">
       <Header layout="responsive" width={1440} height={412} />
-      <h3 className="typography-white text-6xl font-bold absolute bottom-12 left-32">
+      <h3 className="title text-white absolute bottom-4 left-5 sm:bottom-8 lg:bottom-9 xl:bottom-12 sm:left-10 xl:left-32">
         {title}
       </h3>
     </div>
