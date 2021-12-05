@@ -6,7 +6,7 @@ export interface PointsProps {
 
 export default function Points({ amount }: PointsProps) {
   return (
-    <div className="bg-gray-200 rounded-3xl flex items-center p-3 justify-around">
+    <div className="bg-gray-200 rounded-3xl flex items-center p-2 md:p-3 justify-around">
       <p className="typography-gray mr-2">{amount}</p>
       <Coin height={30} width={30} />
     </div>
