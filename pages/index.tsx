@@ -1,4 +1,7 @@
+import { useReducer } from 'react';
+
 import Catalogue from '../components/Catalogue';
+import Dialog from '../components/Dialog';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 
@@ -15,27 +18,34 @@ import { Product } from '../common/interfaces';
 // TODO: this should come from cdn
 import headerImg from '../images/header.png';
 
-const mock = {
-  img: {
-    url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
-    hdUrl: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png',
-  },
-  _id: '5a0b35df734d1d08bf7084cb',
-  name: 'Macbook Pro',
-  cost: 1300,
-  category: 'Laptops',
+type Alert = {
+  open: boolean;
+  success: boolean | null;
 };
 
 export default function Home({ products }: { products: Product[] }) {
   const { data: userData, error, loading, refresh } = useGetUserData();
 
+  const [alert, setAlert] = useReducer(
+    (_state: Alert, action: 'openSuccess' | 'openError' | 'close'): Alert => {
+      return {
+        open: action === 'openSuccess' || action === 'openError',
+        success: action === 'close' ? null : action === 'openSuccess',
+      };
+    },
+    { open: false, success: null }
+  );
+
   const handleProductRedeem = async (productId: string): Promise<void> => {
+    let success = false;
     try {
       await redeemProduct(productId);
-      return await refresh();
+      success = true;
+      await refresh();
     } catch (err) {
-      // TODO: handle error
-      console.error(err);
+      success = false;
+    } finally {
+      setAlert(success ? 'openSuccess' : 'openError');
     }
   };
 
@@ -58,6 +68,23 @@ export default function Home({ products }: { products: Product[] }) {
           onProductRedeem={handleProductRedeem}
         />
       </div>
+      <Dialog
+        open={alert.open}
+        title={alert.success ? 'Success!' : 'Error'}
+        responseIcon={alert.success || undefined}
+        description={
+          alert.success
+            ? 'Product redeemed successfully'
+            : 'Error redeeming product'
+        }
+        buttons={[
+          {
+            label: 'Ok',
+            onClick: () => setAlert('close'),
+          },
+        ]}
+        onClose={() => setAlert('close')}
+      />
     </div>
   );
 }
