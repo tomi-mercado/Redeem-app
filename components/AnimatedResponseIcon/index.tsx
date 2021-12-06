@@ -9,7 +9,7 @@ function AnimatedCheck() {
       <circle
         className="path circle"
         fill="none"
-        stroke="#73AF55"
+        stroke="#0AD4FA"
         stroke-width="6"
         stroke-miterlimit="10"
         cx="65.1"
@@ -19,7 +19,7 @@ function AnimatedCheck() {
       <polyline
         className="path check"
         fill="none"
-        stroke="#73AF55"
+        stroke="#0AD4FA"
         stroke-width="6"
         stroke-linecap="round"
         stroke-miterlimit="10"
