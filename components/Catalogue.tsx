@@ -25,6 +25,8 @@ export default function Catalogue({
 
   const [sort, setSort] = useState<SortType | undefined>(undefined);
 
+  const [isRedeeming, setIsRedeeming] = useState(false);
+
   const handleSort = (clickedSort: SortType) => {
     setPage(0);
     setSort(clickedSort === sort ? undefined : clickedSort);
@@ -39,7 +41,9 @@ export default function Catalogue({
   };
 
   const handleProductRedeem = async (productId: string) => {
+    setIsRedeeming(true);
     await onProductRedeem?.(productId);
+    setIsRedeeming(false);
   };
 
   const productsToRender = (
@@ -98,6 +102,7 @@ export default function Catalogue({
             title={product.name}
             className="w-full"
             onRedeem={handleProductRedeem}
+            disabledButton={isRedeeming}
           />
         ))}
       </div>
