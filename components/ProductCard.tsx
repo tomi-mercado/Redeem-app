@@ -13,6 +13,7 @@ export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   pointsValue: number;
   missingPoints: number | undefined;
   image: string;
+  disabledButton?: boolean;
   onRedeem?: (productId: string) => void;
 }
 
@@ -24,6 +25,7 @@ export default function ProductCard({
   category,
   missingPoints,
   className,
+  disabledButton,
   onRedeem,
 }: ProductCardProps) {
   const errorGettingPoints = missingPoints === undefined;
@@ -92,7 +94,7 @@ export default function ProductCard({
               className={`rounded-2xl mt-3 bg-white typography-gray text-lg w-56 p-2 ${
                 redeemable ? 'cursor-pointer' : 'cursor-auto'
               }`}
-              disabled={!redeemable}
+              disabled={disabledButton || !redeemable}
               onClick={() => redeemable && onRedeem?.(id)}
             >
               {errorGettingPoints
