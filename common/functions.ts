@@ -16,14 +16,10 @@ export async function staticPropsRequest<T = unknown>(
       },
     };
   } catch (error) {
-    if ((error as AxiosError).response?.status === 404) {
-      return {
-        notFound: true,
-      };
-    }
+    console.error(error);
     return {
       props: {
-        error: (error as AxiosError).response || true,
+        error: true,
       },
     };
   }
