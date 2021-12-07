@@ -4,6 +4,7 @@ import Catalogue from '../components/Catalogue';
 import Dialog from '../components/Dialog';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
+import Spinner from '../components/Spinner';
 
 import {
   getProducts,
@@ -50,8 +51,13 @@ export default function Home({ products }: { products: Product[] }) {
   };
 
   if (loading) {
-    // TODO: spinner
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <div className="w-1/2 h-1/2 md:w-1/4 md:h-1/4">
+          <Spinner />
+        </div>
+      </div>
+    );
   }
   if (error) {
     // TODO: error component
