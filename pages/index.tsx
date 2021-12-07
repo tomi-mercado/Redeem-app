@@ -24,8 +24,21 @@ type Alert = {
   success: boolean | null;
 };
 
-export default function Home({ products }: { products: Product[] }) {
-  const { data: userData, error, loading, refresh } = useGetUserData();
+export default function Home({
+  products,
+  error: errorProducts,
+}: {
+  products?: Product[];
+  error?: boolean;
+}) {
+  const {
+    data: userData,
+    error: errorUserData,
+    loading,
+    refresh,
+  } = useGetUserData();
+
+  const error = errorProducts || errorUserData;
 
   const [alert, setAlert] = useReducer(
     (_state: Alert, action: 'openSuccess' | 'openError' | 'close'): Alert => {
@@ -59,10 +72,25 @@ export default function Home({ products }: { products: Product[] }) {
       </div>
     );
   }
-  if (error) {
-    // TODO: error component
-    return <div>Error: {error.message}</div>;
+
+  if (error || !products) {
+    return (
+      <Dialog
+        title={`Failed to load ${!products ? 'products' : 'your data'}`}
+        description="Try again refreshing this page."
+        open={true}
+        onClose={undefined}
+        buttons={[
+          {
+            label: 'Refresh',
+            onClick: () => (!products ? window.location.reload() : refresh()),
+            color: 'primary',
+          },
+        ]}
+      />
+    );
   }
+
   return (
     <div className="pb-16">
       <Navbar userName={userData?.name} userPoints={userData?.points} />
