@@ -55,7 +55,7 @@ export default function Catalogue({
   ).slice(page * pageSize, page * pageSize + pageSize);
 
   const renderProductsCounterProps = {
-    current: pageSize,
+    current: pageSize <= products.length ? pageSize : 0,
     total: products.length,
   };
 
