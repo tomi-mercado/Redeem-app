@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { HtmlHTMLAttributes, useState } from 'react';
+import { useState } from 'react';
 
 import Button, { ButtonProps } from './Button';
 import BuyIcon from './BuyIcon';
@@ -41,16 +41,11 @@ export default function ProductCard({
     onMouseLeave: () => setMouseEnter(false),
   };
 
-  const ButtonWithProps = ({
-    variant,
-  }: {
-    variant?: ButtonProps['variant'];
-    className?: HtmlHTMLAttributes<HTMLButtonElement>['className'];
-  }) => (
+  const ButtonWithProps = (props: ButtonProps) => (
     <Button
       disabled={disabledButton || !redeemable}
       onClick={() => redeemable && onRedeem?.(id)}
-      variant={variant}
+      {...props}
     >
       {errorGettingPoints
         ? 'Failed to load your points'
@@ -68,9 +63,7 @@ export default function ProductCard({
       style={{ width: 'fit-content', height: 'fit-content' }}
     >
       <div className="absolute top-3 right-3 z-10">
-        {redeemable && (
-          <Points amount={pointsValue} className="lg:hidden" />
-        )}
+        {redeemable && <Points amount={pointsValue} className="lg:hidden" />}
         {redeemable ? (
           <BuyIcon
             {...hoverHandlers}
@@ -78,13 +71,16 @@ export default function ProductCard({
             className="hidden lg:block"
           />
         ) : (
-          !mouseEnter && (
-            <Chip disabledHover className="bg-gray-500 opacity-70">
-              <p className="typography-white text-sm flex items-center w-28 justify-around">
-                You need {missingPoints} <Coin height={20} width={20} />
-              </p>
-            </Chip>
-          )
+          <Chip
+            disabledHover
+            className={`bg-gray-500 opacity-70 lg:${
+              !mouseEnter ? 'block' : 'hidden'
+            }`}
+          >
+            <p className="typography-white text-sm flex items-center w-28 justify-around">
+              You need {missingPoints} <Coin height={20} width={20} />
+            </p>
+          </Chip>
         )}
       </div>
       <div
@@ -129,7 +125,7 @@ export default function ProductCard({
             <p className="typography-white text-4xl mr-2">{pointsValue}</p>
             <Coin />
           </div>
-          <ButtonWithProps variant="secondary" />
+          <ButtonWithProps variant="secondary" backgroundColor="white" />
         </div>
       </div>
     </div>
