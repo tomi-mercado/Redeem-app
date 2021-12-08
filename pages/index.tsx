@@ -3,7 +3,7 @@ import { useReducer } from 'react';
 import Catalogue from '../components/Catalogue';
 import Dialog from '../components/Dialog';
 import Header from '../components/Header';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
 import Spinner from '../components/Spinner';
 
 import {
@@ -92,8 +92,7 @@ export default function Home({
   }
 
   return (
-    <div className="pb-16">
-      <Navbar userName={userData?.name} userPoints={userData?.points} />
+    <Layout userData={userData || undefined}>
       <Header title="Electronics" image={headerImg} />
       <div className="mt-4 sm:mt-16 own-container">
         <Catalogue
@@ -119,7 +118,7 @@ export default function Home({
         ]}
         onClose={() => setAlert('close')}
       />
-    </div>
+    </Layout>
   );
 }
 
