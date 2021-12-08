@@ -1,6 +1,10 @@
+import { useReducer } from 'react';
+
 import Catalogue from '../components/Catalogue';
+import Dialog from '../components/Dialog';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
+import Spinner from '../components/Spinner';
 
 import {
   getProducts,
@@ -15,38 +19,78 @@ import { Product } from '../common/interfaces';
 // TODO: this should come from cdn
 import headerImg from '../images/header.png';
 
-const mock = {
-  img: {
-    url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
-    hdUrl: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png',
-  },
-  _id: '5a0b35df734d1d08bf7084cb',
-  name: 'Macbook Pro',
-  cost: 1300,
-  category: 'Laptops',
+type Alert = {
+  open: boolean;
+  success: boolean | null;
 };
 
-export default function Home({ products }: { products: Product[] }) {
-  const { data: userData, error, loading, refresh } = useGetUserData();
+export default function Home({
+  products,
+  error: errorProducts,
+}: {
+  products?: Product[];
+  error?: boolean;
+}) {
+  const {
+    data: userData,
+    error: errorUserData,
+    loading,
+    refresh,
+  } = useGetUserData();
+
+  const error = errorProducts || errorUserData;
+
+  const [alert, setAlert] = useReducer(
+    (_state: Alert, action: 'openSuccess' | 'openError' | 'close'): Alert => {
+      return {
+        open: action === 'openSuccess' || action === 'openError',
+        success: action === 'close' ? null : action === 'openSuccess',
+      };
+    },
+    { open: false, success: null }
+  );
 
   const handleProductRedeem = async (productId: string): Promise<void> => {
+    let success = false;
     try {
       await redeemProduct(productId);
-      return await refresh();
+      success = true;
+      await refresh();
     } catch (err) {
-      // TODO: handle error
-      console.error(err);
+      success = false;
+    } finally {
+      setAlert(success ? 'openSuccess' : 'openError');
     }
   };
 
   if (loading) {
-    // TODO: spinner
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <div className="w-1/2 h-1/2 md:w-1/4 md:h-1/4">
+          <Spinner />
+        </div>
+      </div>
+    );
   }
-  if (error) {
-    // TODO: error component
-    return <div>Error: {error.message}</div>;
+
+  if (error || !products) {
+    return (
+      <Dialog
+        title={`Failed to load ${!products ? 'products' : 'your data'}`}
+        description="Try again refreshing this page."
+        open={true}
+        onClose={undefined}
+        buttons={[
+          {
+            label: 'Refresh',
+            onClick: () => (!products ? window.location.reload() : refresh()),
+            color: 'primary',
+          },
+        ]}
+      />
+    );
   }
+
   return (
     <div className="pb-16">
       <Navbar userName={userData?.name} userPoints={userData?.points} />
@@ -58,6 +102,23 @@ export default function Home({ products }: { products: Product[] }) {
           onProductRedeem={handleProductRedeem}
         />
       </div>
+      <Dialog
+        open={alert.open}
+        title={alert.success ? 'Success!' : 'Error'}
+        responseIcon={alert.success || undefined}
+        description={
+          alert.success
+            ? 'Product redeemed successfully'
+            : 'Error redeeming product'
+        }
+        buttons={[
+          {
+            label: 'Ok',
+            onClick: () => setAlert('close'),
+          },
+        ]}
+        onClose={() => setAlert('close')}
+      />
     </div>
   );
 }
