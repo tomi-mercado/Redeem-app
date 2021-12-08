@@ -2,8 +2,7 @@ export interface UserData {
   id: string;
   name: string;
   points: number;
-  // TODO: check
-  redeemHistory: any[];
+  redeemHistory: Product[];
   createDate: string;
 }
 

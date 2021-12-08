@@ -1,4 +1,4 @@
-export interface BuyIconProps {
+export interface BuyIconProps extends React.SVGAttributes<SVGElement> {
   variant: 'white' | 'blue';
 }
 

@@ -1,10 +1,12 @@
 import Image from 'next/image';
 
-import { useState } from 'react';
+import { HtmlHTMLAttributes, useState } from 'react';
 
+import Button, { ButtonProps } from './Button';
 import BuyIcon from './BuyIcon';
 import Chip from './Chip';
 import Coin from './Coin';
+import Points from './Points';
 
 export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
@@ -39,16 +41,42 @@ export default function ProductCard({
     onMouseLeave: () => setMouseEnter(false),
   };
 
+  const ButtonWithProps = ({
+    variant,
+  }: {
+    variant?: ButtonProps['variant'];
+    className?: HtmlHTMLAttributes<HTMLButtonElement>['className'];
+  }) => (
+    <Button
+      disabled={disabledButton || !redeemable}
+      onClick={() => redeemable && onRedeem?.(id)}
+      variant={variant}
+    >
+      {errorGettingPoints
+        ? 'Failed to load your points'
+        : redeemable
+        ? 'Redeem now'
+        : "You don't have enough points :("}
+    </Button>
+  );
+
   return (
     <div
       className={`relative cursor-pointer ${className || ''} transition-all ${
-        mouseEnter ? 'transform -translate-y-3 duration-300' : ''
+        mouseEnter ? 'lg:transform lg:-translate-y-3 lg:duration-300' : ''
       }`}
       style={{ width: 'fit-content', height: 'fit-content' }}
     >
       <div className="absolute top-3 right-3 z-10">
+        {redeemable && (
+          <Points amount={pointsValue} className="lg:hidden" />
+        )}
         {redeemable ? (
-          <BuyIcon {...hoverHandlers} variant={mouseEnter ? 'white' : 'blue'} />
+          <BuyIcon
+            {...hoverHandlers}
+            variant={mouseEnter ? 'white' : 'blue'}
+            className="hidden lg:block"
+          />
         ) : (
           !mouseEnter && (
             <Chip disabledHover className="bg-gray-500 opacity-70">
@@ -61,7 +89,7 @@ export default function ProductCard({
       </div>
       <div
         {...hoverHandlers}
-        className={`w-72 h-72 p-3 rounded divide-y shadow-${
+        className={`w-72 p-3 rounded divide-y shadow-lg lg:shadow-${
           mouseEnter ? '2xl' : 'md'
         }`}
       >
@@ -79,6 +107,9 @@ export default function ProductCard({
           <p className="typography-gray-light text-base">{category}</p>
           <p className="typography-gray text-lg">{title}</p>
         </div>
+        <div className="lg:hidden flex justify-center items-center pb-1.5 pt-5">
+          <ButtonWithProps variant="primary" />
+        </div>
       </div>
       <div
         {...hoverHandlers}
@@ -89,7 +120,7 @@ export default function ProductCard({
             redeemable ? '37, 187, 241' : '91, 91, 91'
           }, 0.5) 100%)`,
         }}
-        className={`absolute rounded top-0 h-full w-full flex flex-col items-center justify-center opacity-0 transition-all ${
+        className={`absolute rounded top-0 h-full w-full hidden lg:flex flex-col items-center justify-center opacity-0 transition-all ${
           mouseEnter ? 'opacity-100 duration-300' : ''
         }`}
       >
@@ -98,19 +129,7 @@ export default function ProductCard({
             <p className="typography-white text-4xl mr-2">{pointsValue}</p>
             <Coin />
           </div>
-          <button
-            className={`rounded-2xl mt-3 bg-white typography-gray text-lg w-56 p-2 ${
-              redeemable ? 'cursor-pointer' : 'cursor-auto'
-            }`}
-            disabled={disabledButton || !redeemable}
-            onClick={() => redeemable && onRedeem?.(id)}
-          >
-            {errorGettingPoints
-              ? 'Failed to load your points'
-              : redeemable
-              ? 'Redeem now'
-              : "You don't have enough points :("}
-          </button>
+          <ButtonWithProps variant="secondary" />
         </div>
       </div>
     </div>
