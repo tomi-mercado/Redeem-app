@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import CrossIcon from './CrossIcon';
 import arrows from './arrows';
 
 export interface SelectProps
@@ -32,13 +33,19 @@ export default function Select({
   className,
   onChange,
 }: SelectProps) {
-  const ref = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const optionsRef = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const checkIfClickedOutside: EventListener = (e) => {
-      if (isOpen && ref.current && !ref.current.contains(e.target as Node)) {
+      if (
+        isOpen &&
+        (buttonRef.current || optionsRef.current) &&
+        !buttonRef.current?.contains(e.target as Node) &&
+        !optionsRef.current?.contains(e.target as Node)
+      ) {
         toggleOpen();
       }
     };
@@ -71,24 +78,37 @@ export default function Select({
     toggleOpen();
   };
 
+  const handleCleanValue = () => {
+    setLocalValue(undefined);
+    onChange?.({ name, value: undefined });
+  };
+
   const toggleOpen = () => setIsOpen(!isOpen);
 
   return (
-    <div className={`relative ${fullWidth ? 'w-full' : ''}`}>
+    <div className={`relative ${fullWidth ? 'w-full' : ''} ${className || ''}`}>
       <div onClick={toggleOpen}>
-        <label>{label}</label>
+        <label className="typography-gray text-base">{label}</label>
       </div>
       <div className={`${fullWidth ? 'w-full' : 'w-40'}`}>
         <button
-          ref={ref}
+          ref={buttonRef}
           onClick={toggleOpen}
           className={`w-full mt-1 py-2 flex justify-between items-center px-3 text-left ${
             isOpen ? '' : 'shadow-xl'
-          } focus:border-blue-200 border rounded-lg h-12`}
+          } focus:border-blue-200 border rounded-lg h-12 typography-gray text-base`}
         >
-          {selectedOption}
-          <div className="flex items-center justify-between w-2">
+          <p className="noWrap">{selectedOption}</p>
+          <div className="flex items-center justify-between w-7">
+            {localValue && (
+              <CrossIcon
+                onClick={handleCleanValue}
+                style={{ height: 10, width: 10 }}
+                className="mr-1"
+              />
+            )}
             <ArrowDown
+              style={{ height: 14, width: 14 }}
               className={`transform transition-all duration-300 ${
                 isOpen ? 'rotate-180' : ''
               }`}
@@ -99,12 +119,13 @@ export default function Select({
           <div
             className={`rounded-lg absolute shadow-xl z-30 bg-white divide-y ${
               fullWidth ? 'w-full' : 'w-40'
-            }`}
+            } max-h-44 overflow-y-auto`}
+            ref={optionsRef}
           >
             {options?.map(({ text, value }, i) => (
               <div
                 key={i}
-                className={`p-2`}
+                className={`p-2 cursor-pointer hover:bg-gray-100`}
                 onClick={() => handleChange(text, value)}
               >
                 {text}
