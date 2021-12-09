@@ -27,6 +27,10 @@ export default function Catalogue({
 
   const [isRedeeming, setIsRedeeming] = useState(false);
 
+  const [selectedFilter, setSelectedFilter] = useState<string | undefined>(
+    undefined
+  );
+
   const handleSort = (clickedSort: SortType) => {
     setPage(0);
     setSort(clickedSort === sort ? undefined : clickedSort);
@@ -46,17 +50,33 @@ export default function Catalogue({
     setIsRedeeming(false);
   };
 
-  const productsToRender = (
+  const categories = Object.keys(
+    products.reduce(
+      (res, { category }) =>
+        res[category] ? res : { ...res, [category]: true },
+      {} as { [category: string]: boolean }
+    )
+  );
+
+  let productsToRender = selectedFilter
+    ? [...products].filter(({ category }) => category === selectedFilter)
+    : [...products];
+
+  const totalFilteredProducts = productsToRender.length;
+
+  productsToRender = (
     !!sort
-      ? [...products].sort((a: Product, b: Product) =>
+      ? [...productsToRender].sort((a: Product, b: Product) =>
           sort === 'lowestPrice' ? a.cost - b.cost : b.cost - a.cost
         )
-      : products
+      : [...productsToRender]
   ).slice(page * pageSize, page * pageSize + pageSize);
 
+  const totalRenderedProducts = productsToRender.length;
+
   const renderProductsCounterProps = {
-    current: pageSize <= products.length ? pageSize : 0,
-    total: products.length,
+    current: totalRenderedProducts,
+    total: totalFilteredProducts,
   };
 
   const arrowControlProps = {
@@ -66,25 +86,36 @@ export default function Catalogue({
     onClickPrev: () => handlePage('prev'),
   };
 
+  const filterProps = {
+    label: 'Filter by category',
+    options: categories.map((category) => ({ text: category })),
+    value: selectedFilter,
+    onChange: ({ value }: { value: unknown; name: string | undefined }) =>
+      setSelectedFilter(value as string),
+  };
+
+  const sorterProps = {
+    selected: sort,
+    options: [
+      {
+        label: 'Lowest price',
+        value: 'lowestPrice',
+      },
+      {
+        label: 'Highest price',
+        value: 'highestPrice',
+      },
+    ] as { label: string; value: SortType }[],
+    onChange: handleSort,
+  };
+
   return (
     <div style={{ borderBottom: '1px solid #d9d9d9' }}>
       <CatalogueOptions
         arrowControl={arrowControlProps}
         renderProductsCounter={renderProductsCounterProps}
-        sorter={{
-          selected: sort,
-          options: [
-            {
-              label: 'Lowest price',
-              value: 'lowestPrice',
-            },
-            {
-              label: 'Highest price',
-              value: 'highestPrice',
-            },
-          ],
-          onChange: handleSort,
-        }}
+        filter={filterProps}
+        sorter={sorterProps}
       />
       <div className="divide-y">
         <div className="h-4 sm:h-6"></div>
