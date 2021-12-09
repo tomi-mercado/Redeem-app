@@ -2,6 +2,7 @@ import ArrowControl, { ArrowControlProps } from './ArrowControl';
 import RenderProductsCounter, {
   RenderProductsCounterProps,
 } from './RenderProductsCounter';
+import Select, { SelectProps } from './Select';
 import Sorter, { SorterProps } from './Sorter';
 
 export interface CatalogueOptionsProps {
@@ -9,12 +10,14 @@ export interface CatalogueOptionsProps {
   renderProductsCounter?: RenderProductsCounterProps;
   sorter?: SorterProps;
   arrowControl?: ArrowControlProps;
+  filter?: SelectProps;
 }
 
 export default function CatalogueOptions({
   renderProductsCounter,
   sorter,
   arrowControl,
+  filter,
   variant = 'up',
 }: CatalogueOptionsProps) {
   if (variant === 'bottom' && !!arrowControl && !!renderProductsCounter) {
@@ -24,7 +27,10 @@ export default function CatalogueOptions({
           {...renderProductsCounter}
           className="hidden sm:block sm:w-3/4"
         />
-        <ArrowControl {...arrowControl} className="w-auto sm:w-1/4 sm:justify-end" />
+        <ArrowControl
+          {...arrowControl}
+          className="w-auto sm:w-1/4 sm:justify-end"
+        />
       </div>
     );
   }
@@ -40,6 +46,11 @@ export default function CatalogueOptions({
         {sorter && (
           <div className="sm:pl-2 pt-4 sm:pt-0 lg:pl-6 w-full">
             <Sorter {...sorter} />
+          </div>
+        )}
+        {filter && (
+          <div className="sm:pl-2 pt-4 sm:pt-0 lg:pl-6 w-full">
+            <Select {...filter} />
           </div>
         )}
       </div>
