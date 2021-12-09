@@ -104,7 +104,12 @@ export default function ProductCard({
           <p className="typography-gray text-lg">{title}</p>
         </div>
         <div className="lg:hidden flex justify-center items-center pb-1.5 pt-5">
-          <ButtonWithProps variant="primary" />
+          <ButtonWithProps
+            variant="primary"
+            backgroundColor={
+              disabledButton || !redeemable ? 'gray-200' : undefined
+            }
+          />
         </div>
       </div>
       <div
