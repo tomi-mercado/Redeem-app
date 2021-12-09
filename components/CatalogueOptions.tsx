@@ -37,19 +37,19 @@ export default function CatalogueOptions({
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="w-full md:w-3/4 sm:flex divide-y sm:divide-y-0 sm:divide-x items-center">
+      <div className="w-full md:w-3/4 lg:flex divide-y lg:divide-y-0 lg:divide-x items-center">
         {renderProductsCounter && (
-          <div className="mr-4 lg:mr-6 pb-4 sm:pb-0">
+          <div className="mr-4 lg:mr-6 pb-4 lg:pb-0">
             <RenderProductsCounter {...renderProductsCounter} />
           </div>
         )}
         {sorter && (
-          <div className="sm:pl-2 py-4 sm:pt-0 lg:pl-6 w-full">
+          <div className="lg:pl-2 py-4 lg:pt-0 lg:pl-6 w-full">
             <Sorter {...sorter} />
           </div>
         )}
         {filter && (
-          <div className="sm:pl-2 pt-4 sm:pt-0 lg:pl-6 w-full">
+          <div className="lg:pl-2 pt-4 lg:pt-0 lg:pl-6 w-full">
             <Select {...filter} />
           </div>
         )}
