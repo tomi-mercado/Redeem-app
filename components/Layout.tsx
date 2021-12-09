@@ -36,6 +36,7 @@ export default function Layout({
           name="description"
           content={SEO?.description || defaultDescription}
         />
+        <link rel="shortcut icon" href="/aerolab-logo.svg" />
 
         <meta key="og:type" property="og:type" content="website" />
         <meta
@@ -51,7 +52,7 @@ export default function Layout({
         <meta
           key="og:image"
           property="og:image"
-          content={'../images/aerolab-logo.svg'}
+          content="/aerolab-logo.svg"
         />
         <meta
           key="og:url"
