@@ -44,7 +44,7 @@ export default function CatalogueOptions({
           </div>
         )}
         {sorter && (
-          <div className="sm:pl-2 pt-4 sm:pt-0 lg:pl-6 w-full">
+          <div className="sm:pl-2 py-4 sm:pt-0 lg:pl-6 w-full">
             <Sorter {...sorter} />
           </div>
         )}
